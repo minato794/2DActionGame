@@ -11,5 +11,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GoalScene.unity
     guid: 10ae2ef198ed9af4fa36aa60a05350c8
+  - enabled: 1
+    path: Assets/Scenes/TitleScene.unity
+    guid: 6261feaadbfb5fd449caf3fadea4658b
+  - enabled: 1
+    path: Assets/Scenes/Stage2Scene.unity
+    guid: a33f9728c76276448836388fa8e3375d
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
