@@ -7,6 +7,8 @@ public class Goal : MonoBehaviour
     public AudioSource goalSE;
     public AudioSource bgm;
 
+    public string nextSceneName = "GoalScene";
+
     private bool cleared = false;
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -17,7 +19,6 @@ public class Goal : MonoBehaviour
         {
             cleared = true;
 
-            // ★スクロール停止
             StageScroll.isStop = true;
 
             if (bgm != null)
@@ -25,7 +26,6 @@ public class Goal : MonoBehaviour
                 bgm.Stop();
             }
 
-            // プレイヤー停止
             Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
@@ -52,6 +52,6 @@ public class Goal : MonoBehaviour
 
         yield return new WaitForSeconds(2.0f);
 
-        SceneManager.LoadScene("GoalScene");
+        SceneManager.LoadScene(nextSceneName);
     }
 }

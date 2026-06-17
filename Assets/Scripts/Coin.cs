@@ -8,11 +8,16 @@ public class Coin : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            // SE再生
             AudioSource.PlayClipAtPoint(
                 coinSE,
                 Camera.main.transform.position
             );
 
+            // コイン加算
+            CoinManager.instance.AddCoin(1);
+
+            // コイン削除
             Destroy(gameObject);
         }
     }
