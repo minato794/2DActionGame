@@ -2,14 +2,12 @@ using UnityEngine;
 
 public class EnemyMove : MonoBehaviour
 {
-    public static bool gameOver = false;
-
     public float speed = 2f;
     private int direction = 1;
 
     void Update()
     {
-        if (gameOver) return;
+        if (StageScroll.isStop) return;
 
         transform.Translate(Vector2.right * direction * speed * Time.deltaTime);
     }

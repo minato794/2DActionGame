@@ -17,16 +17,26 @@ public class Goal : MonoBehaviour
         {
             cleared = true;
 
+            // ★スクロール停止
+            StageScroll.isStop = true;
+
             if (bgm != null)
             {
                 bgm.Stop();
             }
 
+            // プレイヤー停止
             Rigidbody2D rb = other.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
                 rb.linearVelocity = Vector2.zero;
                 rb.simulated = false;
+            }
+
+            Player player = other.GetComponent<Player>();
+            if (player != null)
+            {
+                player.enabled = false;
             }
 
             StartCoroutine(GoalClear());

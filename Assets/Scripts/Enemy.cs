@@ -5,36 +5,60 @@ using System.Collections;
 public class Enemy : MonoBehaviour
 {
     public AudioClip gameOverSE;
+    public AudioClip stompSE;
     public AudioSource bgmSource;
 
     private bool isGameOver = false;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!isGameOver && collision.gameObject.CompareTag("Player"))
+        if (!collision.gameObject.CompareTag("Player")) return;
+
+        Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+
+        // -------------------------
+        // 踏みつけ判定
+        // -------------------------
+        if (collision.transform.position.y > transform.position.y + 0.3f)
         {
-            isGameOver = true;
-
-            // 全敵停止
-            EnemyMove.gameOver = true;
-
-            // プレイヤーの移動スクリプトを停止
-            Player playerScript = collision.gameObject.GetComponent<Player>();
-            if (playerScript != null)
+            if (playerRb != null)
             {
-                playerScript.enabled = false;
+                playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, 8f);
             }
 
-            // プレイヤーの移動を停止
-            Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
-            if (rb != null)
+            if (stompSE != null)
             {
-                rb.linearVelocity = Vector2.zero;
-                rb.simulated = false;
+                AudioSource.PlayClipAtPoint(stompSE, Camera.main.transform.position, 1f);
             }
 
-            StartCoroutine(GameOver());
+            Destroy(gameObject);
+            return;
         }
+
+        // -------------------------
+        // ゲームオーバー処理
+        // -------------------------
+        if (isGameOver) return;
+
+        isGameOver = true;
+
+        // ★スクロール停止
+        StageScroll.isStop = true;
+
+        // プレイヤー停止
+        Player playerScript = collision.gameObject.GetComponent<Player>();
+        if (playerScript != null)
+        {
+            playerScript.enabled = false;
+        }
+
+        if (playerRb != null)
+        {
+            playerRb.linearVelocity = Vector2.zero;
+            playerRb.simulated = false;
+        }
+
+        StartCoroutine(GameOver());
     }
 
     IEnumerator GameOver()
@@ -44,7 +68,10 @@ public class Enemy : MonoBehaviour
             bgmSource.Stop();
         }
 
-        AudioSource.PlayClipAtPoint(gameOverSE, transform.position);
+        if (gameOverSE != null)
+        {
+            AudioSource.PlayClipAtPoint(gameOverSE, transform.position);
+        }
 
         yield return new WaitForSeconds(1.5f);
 
