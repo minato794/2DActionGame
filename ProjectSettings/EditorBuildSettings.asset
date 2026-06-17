@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Stage2Scene.unity
     guid: a33f9728c76276448836388fa8e3375d
+  - enabled: 1
+    path: Assets/Scenes/GameOverScene.unity
+    guid: 32c0d7092cb88b740a7db97ee2a91379
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

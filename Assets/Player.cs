@@ -1,39 +1,80 @@
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
+using UnityEngine.SceneManagement;
+using System.Net;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    int life = 3;
 
-    public float moveSpeed = 5f;
-
-   // [Header("ジャンプ設定")]
-    public float jumpForce = 7f;
-    public Transform groundCheck;
-    public LayerMask groundLayer;
 
     private Rigidbody2D rb;
-    private float horizontalInput;
-    private bool isGrounded;
+    public float jumpForce = 7f;
+    private float moveInput;
+    private SpriteRenderer spriteRenderer;
+    public float speed = 5f;
 
+    public Transform groundCheck;
+    public LayerMask groundLayer;
+    private bool isGrounded;
 
     void Start()
     {
-        
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
+    // Update is called once per fram
+
+
     void Update()
     {
-        // 左右の入力を取得（A/Dキー、矢印キー）
-       /* horizontalInput = Input.GetAxisRaw("Horizontal");
-
-        // 地面に接地しているか判定（足元の小さな円の範囲に地面レイヤーがあるか）
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
 
-        // 地面にいて、スペースキーが押されたらジャンプ
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        // キーボードの状態を直接見に行く最新の書き方
+        var keyboard = Keyboard.current;
+        if (keyboard == null) return;
+
+        Vector3 move = Vector3.zero;
+
+        if (keyboard.aKey.isPressed)
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.X, jumpForce);
-        }*/
+            move = Vector3.left; // 左方向 (-1, 0, 0)
+            spriteRenderer.flipX = true;
+        }
+        else if (keyboard.dKey.isPressed)
+        {
+            move = Vector3.right; // 右方向 (1, 0, 0)
+            spriteRenderer.flipX = false;
+        }
+
+        // Time.deltaTime を掛けることで、PCの性能に関わらず一定の速度になります
+        transform.Translate(move * speed * Time.deltaTime);
+
+        if (keyboard.spaceKey.wasPressedThisFrame && isGrounded)
+        {
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
+
+    }
+
+    float lastDamageTime; // 最後にダメージを受けた時間
+    float damageInterval = 1.0f;
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            if (Time.time > lastDamageTime + damageInterval)
+            {
+                // 相手の名前をログに表示
+                Debug.Log(collision.gameObject.name + "に当たった！");
+                lastDamageTime = Time.time;
+                life -= 1;
+
+            }
+        }
+
+
     }
 }
