@@ -28,7 +28,11 @@ public class Enemy : MonoBehaviour
 
             if (stompSE != null)
             {
-                AudioSource.PlayClipAtPoint(stompSE, Camera.main.transform.position, 1f);
+                AudioSource.PlayClipAtPoint(
+                    stompSE,
+                    Camera.main.transform.position,
+                    1f
+                );
             }
 
             Destroy(gameObject);
@@ -42,7 +46,7 @@ public class Enemy : MonoBehaviour
 
         isGameOver = true;
 
-        // ★スクロール停止
+        // スクロール停止
         StageScroll.isStop = true;
 
         // プレイヤー停止
@@ -70,10 +74,16 @@ public class Enemy : MonoBehaviour
 
         if (gameOverSE != null)
         {
-            AudioSource.PlayClipAtPoint(gameOverSE, transform.position);
+            AudioSource.PlayClipAtPoint(
+                gameOverSE,
+                transform.position
+            );
         }
 
         yield return new WaitForSeconds(1.5f);
+
+        // 現在のステージ名を保存
+        GameData.retrySceneName = SceneManager.GetActiveScene().name;
 
         SceneManager.LoadScene("GameOverScene");
     }

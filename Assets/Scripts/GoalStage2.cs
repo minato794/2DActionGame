@@ -2,12 +2,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class Goal : MonoBehaviour
+public class GoalStage2 : MonoBehaviour
 {
     public AudioSource goalSE;
     public AudioSource bgm;
-
-    public string nextSceneName = "GoalScene";
 
     private bool cleared = false;
 
@@ -52,6 +50,9 @@ public class Goal : MonoBehaviour
 
         yield return new WaitForSeconds(2.0f);
 
-        SceneManager.LoadScene(nextSceneName);
+        // コイン枚数を保存
+        GameData.coinCount = CoinManager.instance.coinCount;
+
+        SceneManager.LoadScene("GoalScene2");
     }
 }

@@ -13,9 +13,21 @@ public class CoinManager : MonoBehaviour
         instance = this;
     }
 
+    void Start()
+    {
+        if (coinText != null)
+        {
+            coinText.text = "Coin: " + coinCount;
+        }
+    }
+
     public void AddCoin(int amount)
     {
         coinCount += amount;
-        coinText.text = "Coin: " + coinCount;
+
+        if (coinText != null)
+        {
+            coinText.text = "Coin: " + coinCount;
+        }
     }
 }

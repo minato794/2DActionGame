@@ -8,7 +8,7 @@ public class ResultUIManager : MonoBehaviour
 
     void Start()
     {
-        coinText.text = "Coin: " + CoinManager.instance.coinCount;
+        coinText.text = "Coin: " + GameData.coinCount;
     }
 
     public void NextStage()
@@ -18,6 +18,7 @@ public class ResultUIManager : MonoBehaviour
 
     public void BackToTitle()
     {
+        Debug.Log("タイトルボタン押された！");
         SceneManager.LoadScene("TitleScene");
     }
 }
