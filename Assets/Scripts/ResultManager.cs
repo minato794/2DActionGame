@@ -18,7 +18,7 @@ public class ResultUIManager : MonoBehaviour
 
     public void BackToTitle()
     {
-        Debug.Log("タイトルボタン押された！");
+      //  Debug.Log("タイトルボタン押された！");
         SceneManager.LoadScene("TitleScene");
     }
 }
